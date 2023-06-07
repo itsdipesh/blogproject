@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login and Registration</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="registration.css">
+  <script src="script.js"></script>
+</head>
+<body>
+  <div class="container">
+   
+  
+  <div id="registration-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeRegistration()">&times;</span>
+      <h2>Registration</h2>
+      <form id="registration-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Name" required>
+        
+        <label for="email-reg">Email:</label>
+        <input type="email" id="email-reg" placeholder="Email" required>
+        
+        <label for="password-reg">Password:</label>
+        <input type="password" id="password-reg" placeholder="Password" required>
+        
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Open registration modal
+    function openRegistration() {
+      document.getElementById("registration-modal").style.display = "block";
+    }
+
+    // Close registration modal
+    function closeRegistration() {
+      document.getElementById("registration-modal").style.display = "none";
+    }
+  </script>
+</body>
+</html>

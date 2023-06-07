@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blog Platform</title>
+  <link rel="stylesheet" type="text/css" href="blog.css">
+  <script src="blog.js"></script>
+<script>
+    // Blog posts array to store created blogs
+let blogPosts = [];
+
+// Function to generate a unique ID
+function generateUniqueId() {
+  return '_' + Math.random().toString(36).substr(2, 9);
+}
+
+// Function to render the blog list
+function renderBlogList() {
+  const blogList = document.getElementById('blog-list');
+  
+  // Clear the blog list
+  blogList.innerHTML = '';
+  
+  // Loop through the blog posts array and create list items
+  blogPosts.forEach(blog => {
+    const listItem = document.createElement('li');
+    listItem.innerHTML = `
+      <h3>${blog.title}</h3>
+      <p>${blog.content}</p>
+      <button onclick="editBlog('${blog.id}')">Edit</button>
+      <button onclick="deleteBlog('${blog.id}')">Delete</button>
+    `;
+    blogList.appendChild(listItem);
+  });
+}
+
+// Function to add a new blog post
+function addBlogPost(title, content) {
+  const blogPost = {
+    id: generateUniqueId(),
+    title,
+    content
+  };
+  
+  blogPosts.push(blogPost);
+  
+  renderBlogList();
+}
+
+// Function to edit a blog post
+function editBlogPost(id, title, content) {
+  const blogPost = blogPosts.find(post => post.id === id);
+  if (blogPost) {
+    blogPost.title = title;
+    blogPost.content = content;
+    renderBlogList();
+  }
+}
+
+// Function to delete a blog post
+function deleteBlogPost(id) {
+  blogPosts = blogPosts.filter(post => post.id !== id);
+  renderBlogList();
+}
+
+// Handle form submission
+const form = document.getElementById('blog-form');
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+  
+  const titleInput = document.getElementById('blog-title');
+  const contentInput = document.getElementById('blog-content');
+  const submitButton = document.getElementById('blog-submit');
+  const blogIdInput = document.getElementById('blog-id');
+  
+  const title = titleInput.value;
+  const content = contentInput.value;
+  const blogId = blogIdInput.value;
+  
+  if (submitButton.textContent === 'Submit') {
+    addBlogPost(title, content);
+  } else if (submitButton.textContent === 'Update') {
+    editBlogPost(blogId, title, content);
+    submitButton.textContent = 'Submit';
+    blogIdInput.value = '';
+  }
+  
+  titleInput.value = '';
+  contentInput.value = '';
+});
+
+// Edit blog
+function editBlog(blogId) {
+  const blogPost = blogPosts.find(post => post.id === blogId);
+  if (blogPost) {
+    const titleInput = document.getElementById('blog-title');
+    const contentInput = document.getElementById('blog-content');
+    const submitButton = document.getElementById('blog-submit');
+    const blogIdInput = document.getElementById('blog-id');
+    
+    titleInput.value = blogPost.title;
+    contentInput.value = blogPost.content;
+    submitButton.textContent = 'Update';
+    blogIdInput.value = blogId;
+  }
+}
+
+// Delete blog
+function deleteBlog(blogId) {
+  deleteBlogPost(blogId);
+}
+
+// Initial render of the blog list
+renderBlogList();
+
+</script>
+
+</head>
+<body>
+  <div id="blog-form-container" class="container">
+    <h2>Create/Edit Blog</h2>
+    <form id="blog-form">
+      <label for="blog-title">Title:</label>
+      <input type="text" id="blog-title" placeholder="Blog Title" required>
+      
+      <label for="blog-content">Content:</label>
+      <textarea id="blog-content" placeholder="Blog Content" required></textarea>
+      
+      <button type="submit" id="blog-submit">Submit</button>
+      <button type="button" id="blog-delete" style="display: none;">Delete</button>
+    </form>
+  </div>
+  
+  <div id="blog-list-container" class="container">
+    <h2>Published Blogs</h2>
+    <ul id="blog-list"></ul>
+  </div>
+  
+  <script src="blog.js"></script>
+</body>
+</html>
